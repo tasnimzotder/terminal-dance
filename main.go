@@ -7,12 +7,14 @@ import (
 	"image/gif"
 	"log"
 	"os"
+	"strconv"
 	"time"
 )
 
 const (
-	CHARS    = "      .:-=+*#%@"
-	REQ_SIZE = 64
+	CHARS = "   .:-=+*#%@"
+	// chars add more detail
+	//CHARS = "      .':-~=+*#%@"
 )
 
 // reduce the size of the gif to 100x100
@@ -60,10 +62,10 @@ func readGif(fileName string) *gif.GIF {
 	return gifImage
 }
 
-func readFrames(fileName string) []*image.Paletted {
+func readFrames(fileName string, reqSize int) []*image.Paletted {
 	gifImage := readGif(fileName)
 	// resize the gif
-	gifImage.Image = resizeFrames(gifImage.Image, REQ_SIZE, REQ_SIZE)
+	gifImage.Image = resizeFrames(gifImage.Image, reqSize, reqSize)
 
 	return gifImage.Image
 }
@@ -83,8 +85,22 @@ func clearConsole() {
 }
 
 func main() {
+	reqSize := 64
+	args := os.Args[1:]
+
+	if len(args) > 0 {
+		newReqSize := 0
+
+		for _, arg := range args {
+			val, _ := strconv.Atoi(arg)
+			newReqSize += val
+		}
+
+		reqSize = newReqSize
+	}
+
 	fileName := "gifs/tom.gif"
-	gifImage := readFrames(fileName)
+	gifImage := readFrames(fileName, reqSize)
 
 	frameValues := make([][]int, len(gifImage))
 
@@ -110,7 +126,7 @@ func main() {
 
 			fmt.Printf("\n\n")
 
-			time.Sleep(30 * time.Millisecond)
+			time.Sleep(40 * time.Millisecond)
 			clearConsole()
 		}
 

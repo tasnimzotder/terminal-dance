@@ -5,9 +5,12 @@ docker-build:
 	docker build -t $(DOCKER_IMAGE_NAME) .
 
 docker-run:
-	docker run -it --rm -v $(PWD)/frames:/app/frames $(DOCKER_IMAGE_NAME) sh -c "make local-run"
+	docker run -it --rm -v $(PWD)/frames:/app/frames $(DOCKER_IMAGE_NAME) sh -c "make local-build && ./main $(size)"
+
+local-build:
+	go build -o main . && chmod +x main
 
 local-run:
-	go build -o main . && chmod +x main && ./main
+	./main $(size)
 
-.PHONY: docker-build docker-run local-run
+.PHONY: docker-build docker-run local-build local-run
