@@ -12,7 +12,7 @@ import (
 
 const (
 	CHARS    = "      .:-=+*#%@"
-	REQ_SIZE = 250
+	REQ_SIZE = 64
 )
 
 // reduce the size of the gif to 100x100
@@ -113,5 +113,7 @@ func main() {
 			time.Sleep(30 * time.Millisecond)
 			clearConsole()
 		}
+
+		time.Sleep(100 * time.Millisecond)
 	}
 }
